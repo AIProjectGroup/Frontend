@@ -13,6 +13,46 @@ interface Banner {
   createdat: Date;
   updatedat: Date;
 }
+
+// Placeholder banners to show when API fails
+const placeholderBanners: Banner[] = [
+  {
+    bannerid: 1,
+    toptitle: "Summer Sale",
+    middletitle: "Fashion Collection",
+    bottomtitle: "Starting from $",
+    imglink: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=400&fit=crop",
+    startprice: 25,
+    buttontitle: "Shop Now",
+    redirect_link: "/categories/fashion",
+    createdat: new Date(),
+    updatedat: new Date()
+  },
+  {
+    bannerid: 2,
+    toptitle: "New Arrivals",
+    middletitle: "Electronics",
+    bottomtitle: "Starting from $",
+    imglink: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1200&h=400&fit=crop",
+    startprice: 99,
+    buttontitle: "Explore",
+    redirect_link: "/categories/electronics",
+    createdat: new Date(),
+    updatedat: new Date()
+  },
+  {
+    bannerid: 3,
+    toptitle: "Special Offer",
+    middletitle: "Footwear",
+    bottomtitle: "Starting from $",
+    imglink: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=1200&h=400&fit=crop",
+    startprice: 49,
+    buttontitle: "Buy Now",
+    redirect_link: "/categories/footwear",
+    createdat: new Date(),
+    updatedat: new Date()
+  }
+];
 const Banner = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const data = useRef<Banner[]>([]);
@@ -26,16 +66,15 @@ const Banner = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + data.current.length) % data.current.length);
   };
   async function sync(){
-    const res = await bannerDataHandler();
-    switch (res.status) {
-      case 200:
-        data.current = res.banners.data;
-        setloading(false);
-        break;
-      default:
-
-        break;
-    }
+    // Use placeholder banners as primary data source
+    data.current = placeholderBanners;
+    setloading(false);
+    
+    // Optionally try to fetch from API in background (commented out for now)
+    // const res = await bannerDataHandler();
+    // if (res.status === 200) {
+    //   data.current = res.banners.data;
+    // }
   }
   useLayoutEffect(() => {
     sync();

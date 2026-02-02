@@ -61,6 +61,130 @@ const defaultProduct: Product = {
       imgalt: ""
   }
 };
+
+// Placeholder products to show when API fails
+const placeholderProducts: Product[] = [
+  {
+    productid: 1,
+    title: "Classic Cotton T-Shirt",
+    category: "T-Shirt",
+    maincategory: "fashion",
+    price: "29.99",
+    discount: "19.99",
+    stars: 4,
+    isnew: true,
+    issale: false,
+    isdiscount: true,
+    colors: [],
+    sizes: [],
+    reviewCount: 24,
+    images: {
+      imageid: 1,
+      imglink: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=300&fit=crop",
+      imgalt: "Classic Cotton T-Shirt"
+    }
+  },
+  {
+    productid: 2,
+    title: "Denim Jacket",
+    category: "Jacket",
+    maincategory: "fashion",
+    price: "89.99",
+    discount: "69.99",
+    stars: 5,
+    isnew: false,
+    issale: true,
+    isdiscount: true,
+    colors: [],
+    sizes: [],
+    reviewCount: 18,
+    images: {
+      imageid: 2,
+      imglink: "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=300&h=300&fit=crop",
+      imgalt: "Denim Jacket"
+    }
+  },
+  {
+    productid: 3,
+    title: "Running Sneakers",
+    category: "Sport",
+    maincategory: "footwear",
+    price: "129.99",
+    discount: "99.99",
+    stars: 4,
+    isnew: false,
+    issale: false,
+    isdiscount: true,
+    colors: [],
+    sizes: [],
+    reviewCount: 42,
+    images: {
+      imageid: 3,
+      imglink: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=300&fit=crop",
+      imgalt: "Running Sneakers"
+    }
+  },
+  {
+    productid: 4,
+    title: "Gold Necklace",
+    category: "Necklace",
+    maincategory: "jewellery",
+    price: "199.99",
+    discount: "149.99",
+    stars: 5,
+    isnew: true,
+    issale: false,
+    isdiscount: true,
+    colors: [],
+    sizes: [],
+    reviewCount: 12,
+    images: {
+      imageid: 4,
+      imglink: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=300&h=300&fit=crop",
+      imgalt: "Gold Necklace"
+    }
+  },
+  {
+    productid: 5,
+    title: "Wireless Headphones",
+    category: "Headphone",
+    maincategory: "electronics",
+    price: "159.99",
+    discount: "119.99",
+    stars: 4,
+    isnew: false,
+    issale: true,
+    isdiscount: true,
+    colors: [],
+    sizes: [],
+    reviewCount: 67,
+    images: {
+      imageid: 5,
+      imglink: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop",
+      imgalt: "Wireless Headphones"
+    }
+  },
+  {
+    productid: 6,
+    title: "Floral Perfume",
+    category: "Perfume",
+    maincategory: "cosmetics",
+    price: "79.99",
+    discount: "59.99",
+    stars: 4,
+    isnew: false,
+    issale: false,
+    isdiscount: true,
+    colors: [],
+    sizes: [],
+    reviewCount: 31,
+    images: {
+      imageid: 6,
+      imglink: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=300&h=300&fit=crop",
+      imgalt: "Floral Perfume"
+    }
+  }
+];
 const ProductCard = ({ product }:{ product:Product }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [productData, setproductData] = useState(defaultProduct);
@@ -122,18 +246,16 @@ const Products = () => {
   const products = useRef<Product[]>([]);
   const [loading, setloading] = useState(true);
   async function sync(){
-    const res = await homeProductsDataHandler();
-        switch (res.status) {
-        case 200:
-            products.current = res.data.data;
-            dataChecked.current = true;
-            setloading(false);
-            break;
-        default:
-          dataChecked.current = true;
-          setloading(false);
-          break;
-    }
+    // Use placeholder products as primary data source
+    products.current = placeholderProducts;
+    dataChecked.current = true;
+    setloading(false);
+    
+    // Optionally try to fetch from API in background (commented out for now)
+    // const res = await homeProductsDataHandler();
+    // if (res.status === 200) {
+    //   products.current = res.data.data;
+    // }
   }
   useLayoutEffect(() => {
     sync();

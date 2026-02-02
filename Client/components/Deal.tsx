@@ -19,20 +19,51 @@ interface DealProduct {
     imgalt: string;
     end_time:string;
 }
+
+// Placeholder deal products to show when API fails
+const placeholderDeals: DealProduct[] = [
+  {
+    productid: 101,
+    title: "Premium Wireless Bluetooth Headphones",
+    stars: 5,
+    description: "High-quality wireless headphones with noise cancellation and premium sound quality. Perfect for music lovers and professionals.",
+    price: 89.99,
+    discount: 149.99,
+    sold: 45,
+    available: 100,
+    rating: 4.8,
+    imglink: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
+    imgalt: "Premium Wireless Bluetooth Headphones",
+    end_time: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours from now
+  },
+  {
+    productid: 102,
+    title: "Smart Fitness Watch with Heart Rate Monitor",
+    stars: 4,
+    description: "Advanced fitness tracking with heart rate monitoring, GPS, and smartphone connectivity. Track your health and fitness goals.",
+    price: 199.99,
+    discount: 299.99,
+    sold: 23,
+    available: 75,
+    rating: 4.6,
+    imglink: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop",
+    imgalt: "Smart Fitness Watch",
+    end_time: new Date(Date.now() + 18 * 60 * 60 * 1000).toISOString() // 18 hours from now
+  }
+];
 const Deal = () => {
     const data = useRef<DealProduct[]>([]);
     const [loading, setloading] = useState(true);
     async function sync(){
-        const res = await dealDataHandler();
-        switch (res.status) {
-          case 200:
-            data.current = res.deals.data;
-            setloading(false);
-            break;
-          default:
-    
-            break;
-        }
+        // Use placeholder deals as primary data source
+        data.current = placeholderDeals;
+        setloading(false);
+        
+        // Optionally try to fetch from API in background (commented out for now)
+        // const res = await dealDataHandler();
+        // if (res.status === 200) {
+        //   data.current = res.deals.data;
+        // }
     }
     useLayoutEffect(() => {
       sync();
